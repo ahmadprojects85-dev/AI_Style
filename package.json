@@ -1,31 +1,15 @@
 {
-  "name": "styleai-server",
-  "version": "1.0.0",
-  "description": "StyleAI Backend — Express + Neon PostgreSQL + Drizzle ORM",
+  "name": "style-ai",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "dev": "node --watch index.js",
-    "start": "node index.js",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/index.js"
   },
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "@neondatabase/serverless": "^1.0.2",
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
-    "drizzle-kit": "^0.31.10",
-    "drizzle-orm": "^0.45.1",
-    "express": "^5.2.1",
-    "express-rate-limit": "^8.3.1",
-    "google-auth-library": "^10.6.2",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.3",
-    "multer": "^2.1.1",
-    "openai": "^6.32.0",
-    "pg": "^8.20.0",
-    "uuid": "^13.0.0"
+  "devDependencies": {
+    "vite": "^8.0.1"
   }
 }
