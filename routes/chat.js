@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/auth.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
-import { chatWithStylist } from '../services/openai.js';
+import { chatWithStylist } from '../services/ai.js';
 
 const router = Router();
 

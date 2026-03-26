@@ -8,7 +8,7 @@ import { asyncHandler } from '../middleware/errorHandler.js';
 
 const router = Router();
 
-import { getDailyOutfitSuggestion } from '../services/openai.js';
+import { getDailyOutfitSuggestion } from '../services/ai.js';
 
 // ── Get Daily Outfit Suggestion (AI Powered) ──
 router.get('/suggestion', authenticate, asyncHandler(async (req, res) => {

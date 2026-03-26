@@ -59,7 +59,7 @@ router.get('/:id', authenticate, asyncHandler(async (req, res) => {
 }));
 
 import fs from 'fs/promises';
-import { analyzeWardrobeImage } from '../services/openai.js';
+import { analyzeWardrobeImage } from '../services/ai.js';
 
 // ── Add New Item ──
 router.post('/',

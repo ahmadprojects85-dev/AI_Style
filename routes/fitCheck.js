@@ -8,7 +8,7 @@ import { asyncHandler } from '../middleware/errorHandler.js';
 import { upload } from '../config/upload.js';
 
 import fs from 'fs/promises';
-import { getFitCheckAnalysis } from '../services/openai.js';
+import { getFitCheckAnalysis } from '../services/ai.js';
 import { users } from '../db/schema.js';
 
 const router = Router();
