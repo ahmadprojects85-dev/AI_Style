@@ -3,6 +3,7 @@ import { createSidebar } from '../components/sidebar.js';
 import { createTopbar } from '../components/topbar.js';
 import { icons } from '../components/icons.js';
 import { api } from '../api.js';
+import { navigate } from '../router.js';
 
 export async function renderDashboard(container) {
   const user = JSON.parse(localStorage.getItem('styleai_user') || '{}');
@@ -174,7 +175,10 @@ export async function renderDashboard(container) {
             ` : suggestions.length > 0 ? renderOutfitInPlace(suggestions[0]) : outfitError ? `
               <div style="font-size:28px;margin-bottom:16px;">⚠️</div>
               <div style="font-size:14px;font-weight:600;color:rgba(0,0,0,0.5);line-height:1.6;max-width:250px;margin-bottom:20px;">${outfitError}</div>
-              <button class="btn-retry" style="padding:12px 32px;border-radius:100px;background:#1A1A1A;color:#FFF;font-weight:700;font-size:13px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">Try Again</button>
+              <div style="display:flex; gap:12px; justify-content:center;">
+                <button class="btn-retry" style="padding:12px 24px;border-radius:100px;background:#F9F7F5;color:#1A1A1A;font-weight:700;font-size:13px;border:1.5px solid rgba(0,0,0,0.1);cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;">Try Again</button>
+                <button class="btn-add-clothes" style="padding:12px 24px;border-radius:100px;background:#1A1A1A;color:#FFF;font-weight:700;font-size:13px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;">Add Clothes</button>
+              </div>
             ` : `
               <div style="font-size: 28px; margin-bottom: 24px; color: #1A1A1A;">✦</div>
               <div style="font-size: 13px; font-weight: 600; color: rgba(0,0,0,0.3); line-height: 1.6; max-width: 180px;">
@@ -222,7 +226,9 @@ export async function renderDashboard(container) {
         render();
       }
     }));
+    
     el.querySelector('.btn-retry')?.addEventListener('click', () => startFetchingBoth());
+    el.querySelector('.btn-add-clothes')?.addEventListener('click', () => navigate('/add-item'));
     
     if (el.querySelector('#prompt-preview')) {
       bindCardEvents(el.querySelector('#prompt-preview'));
@@ -266,7 +272,7 @@ export async function renderDashboard(container) {
       if (resp?.suggestion) {
         suggestions.push(resp.suggestion);
       } else {
-        outfitError = 'No outfit could be generated. Make sure your wardrobe has items.';
+        outfitError = resp?.message || 'No outfit could be generated. Make sure your wardrobe has items.';
       }
     } catch(err) { 
       console.error('Outfit generation failed:', err);

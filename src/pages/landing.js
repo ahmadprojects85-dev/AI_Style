@@ -15,11 +15,12 @@ export function renderLanding(container) {
           <p class="landing-sub">Build your digital closet and get AI-powered outfit recommendations.</p>
           <div class="landing-actions">
             <button class="btn-primary" id="btn-get-started">Get Started</button>
+            <p class="body-sm" style="margin-top:var(--sp-2); text-align:center">Already have an account? <a href="#/login">Log in</a></p>
           </div>
         </div>
       </div>
     </div>
   `;
 
-  document.getElementById('btn-get-started').addEventListener('click', () => navigate('/onboarding'));
+  document.getElementById('btn-get-started').addEventListener('click', () => navigate('/register'));
 }

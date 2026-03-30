@@ -8,10 +8,11 @@ const GOOGLE_CLIENT_ID = '113815005105-2kg6d5c343se85kbm4bel96vsgt7o7e7.apps.goo
 const popularCities = ['Milan', 'Paris', 'London', 'New York', 'Tokyo', 'Dubai', 'Los Angeles', 'Berlin', 'Seoul', 'Barcelona', 'Sydney', 'Istanbul'];
 
 export function renderOnboarding(container) {
-  let currentStep = 1;
-  let googleEmail = '';
-  let googleAvatar = '';
-  let userName = '';
+  const tempUser = JSON.parse(localStorage.getItem('styleai_temp_user') || '{}');
+
+  let currentStep = 2; // Start at Name/Profile completion
+  let userEmail = tempUser.email || '';
+  let userName = ''; // No longer in tempUser from registration
   let selectedCity = '';
   let weatherUnit = '°C';
   let selectedGender = '';
@@ -30,76 +31,12 @@ export function renderOnboarding(container) {
 
     const stepEl = document.getElementById('step-content');
 
-    if (currentStep === 1) renderStep1(stepEl);
-    else if (currentStep === 2) renderStep2(stepEl);
+    if (currentStep === 2) renderStep2(stepEl);
     else if (currentStep === 3) renderStep3(stepEl);
     else renderStep4(stepEl);
   }
 
-  // Step 1 — Google Sign-In (Real)
-  function renderStep1(el) {
-    el.innerHTML = `
-      <div style="text-align:center;margin-bottom:var(--sp-4);">
-        <div class="landing-logo" style="justify-content:center;">Style<span>AI</span></div>
-        <h2 style="margin-top:var(--sp-2);">Create your account</h2>
-        <p class="body-sm">Sign in to start building your personal AI wardrobe.</p>
-      </div>
-      
-      <div id="google-btn-wrapper" style="display:flex; justify-content:center; margin-bottom: 24px; min-height: 44px;"></div>
-      
-      <p style="text-align:center;font-size:12px;color:var(--text-secondary);margin-top:var(--sp-3)">
-        By continuing, you agree to our Terms of Service and Privacy Policy.
-      </p>
-    `;
-
-    window.handleCredentialResponse = async (response) => {
-      try {
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        googleEmail = payload.email;
-        if (payload.name) userName = payload.name;
-        if (payload.picture) googleAvatar = payload.picture;
-        
-        document.getElementById('google-btn-wrapper').style.opacity = '0.5';
-        document.getElementById('google-btn-wrapper').style.pointerEvents = 'none';
-
-        const res = await api.googleAuth(response.credential);
-
-        if (!res.isNewUser) {
-           api.setToken(res.token);
-           localStorage.setItem('styleai_user', JSON.stringify({
-             name: res.user.name,
-             email: res.user.email,
-             city: res.user.city,
-             gender: res.user.gender,
-             avatarUrl: res.user.avatarUrl
-           }));
-           navigate('/dashboard');
-        } else {
-           googleEmail = res.email;
-           userName = res.name || '';
-           googleAvatar = res.avatarUrl || '';
-           currentStep = 2;
-           render();
-        }
-      } catch (err) {
-        console.error('Error during Google authentication:', err);
-        alert('Authentication failed: ' + err.message);
-        document.getElementById('google-btn-wrapper').style.opacity = '1';
-        document.getElementById('google-btn-wrapper').style.pointerEvents = 'auto';
-      }
-    };
-
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: window.handleCredentialResponse
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById('google-btn-wrapper'),
-        { theme: 'outline', size: 'large', width: 340 }
-      );
-    }
-  }
+  // Step 1 — Removed
 
   // Step 2 — Name
   function renderStep2(el) {
@@ -276,27 +213,25 @@ export function renderOnboarding(container) {
 
         const password = 'GoogleUserPassword123!';
         const payload = {
-          email: googleEmail,
-          password: password,
+          email: userEmail,
           name: userName,
           gender: selectedGender,
           city: selectedCity,
           weatherUnit: weatherUnit,
-          stylePreferences: [], // Now dynamic on homepage
-          avatarUrl: googleAvatar 
+          onboardingCompleted: true
         };
 
         try {
-          const res = await api.register(payload);
-          api.setToken(res.token);
+          const res = await api.completeOnboarding(payload);
           
           localStorage.setItem('styleai_user', JSON.stringify({
             name: userName,
-            email: googleEmail,
+            email: userEmail,
             city: selectedCity,
-            gender: selectedGender,
-            avatarUrl: googleAvatar 
+            gender: selectedGender
           }));
+          
+          localStorage.removeItem('styleai_temp_user');
           
           navigate('/dashboard');
         } catch (err) {

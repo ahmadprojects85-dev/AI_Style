@@ -2,6 +2,8 @@
 import './style.css';
 import { registerRoute, initRouter } from './router.js';
 import { renderLanding } from './pages/landing.js';
+import { renderLogin } from './pages/login.js';
+import { renderRegister } from './pages/register.js';
 import { renderOnboarding } from './pages/onboarding.js';
 import { renderDashboard } from './pages/dashboard.js';
 import { renderWardrobe } from './pages/wardrobe.js';
@@ -11,6 +13,8 @@ import { renderProfile } from './pages/profile.js';
 
 // Register routes
 registerRoute('/', (container) => renderLanding(container));
+registerRoute('/login', (container) => renderLogin(container));
+registerRoute('/register', (container) => renderRegister(container));
 registerRoute('/onboarding', (container) => renderOnboarding(container));
 registerRoute('/dashboard', (container) => renderDashboard(container));
 registerRoute('/wardrobe', (container) => renderWardrobe(container));

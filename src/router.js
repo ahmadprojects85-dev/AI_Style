@@ -3,7 +3,7 @@ import { api } from './api.js';
 const routes = {};
 let currentCleanup = null;
 
-const protectedRoutes = ['/dashboard', '/wardrobe', '/add-item', '/fit-check', '/profile'];
+const protectedRoutes = ['/dashboard', '/wardrobe', '/add-item', '/fit-check', '/profile', '/onboarding'];
 
 export function registerRoute(path, handler) {
   routes[path] = handler;
@@ -20,7 +20,7 @@ export function initRouter() {
 
     // Auth guard
     if (protectedRoutes.includes(hash) && !api.getToken()) {
-      navigate('/onboarding');
+      navigate('/login');
       return;
     }
     

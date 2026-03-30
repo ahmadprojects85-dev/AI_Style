@@ -1,6 +1,6 @@
 // ── API Client Utility ──
 
-const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3001/api`;
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3002/api`;
 
 export const api = {
   getToken() {
@@ -52,13 +52,13 @@ export const api = {
   // Auth
   register(data) { return this.request('/auth/register', { method: 'POST', body: data }); },
   login(data) { return this.request('/auth/login', { method: 'POST', body: data }); },
-  googleAuth(idToken) { return this.request('/auth/google', { method: 'POST', body: { idToken } }); },
   getMe() { return this.request('/auth/me'); },
 
   // Profile
   getProfile() { return this.request('/profile'); },
   updateProfile(data) { return this.request('/profile', { method: 'PUT', body: data }); },
   uploadAvatar(formData) { return this.request('/profile/avatar', { method: 'POST', body: formData }); },
+  completeOnboarding(data) { return this.request('/profile/complete-onboarding', { method: 'POST', body: data }); },
 
   // Wardrobe
   getWardrobe(params = '') { return this.request(`/wardrobe${params ? '?' + params : ''}`); },
